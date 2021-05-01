@@ -1,9 +1,9 @@
-import React, {useReducer, useRef} from 'react';
+import React, { useReducer, useRef } from 'react';
 import GameCode from 'game-code';
 
 const App = () => (
     <div>
-      <GameCode/>
+        <GameCode />
     </div>
 );
 

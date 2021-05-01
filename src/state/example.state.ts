@@ -1,4 +1,4 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 const exampleState = atom({
     key: 'textState', // unique ID (with respect to other atoms/selectors)

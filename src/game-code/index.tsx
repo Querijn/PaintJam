@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
-import {useRecoilState} from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import * as Pixi from 'pixi.js';
 
