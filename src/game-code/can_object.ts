@@ -116,7 +116,7 @@ export default class CanObject {
     }
 
     updateFlight(delta) {
-        if (this.y < 0) {
+        if (this.y + this.sizeToBottom < 0) {
             this.y = 0;
 
             // Reset Y velocity
@@ -226,9 +226,13 @@ export default class CanObject {
         return this.started && Math.abs(this.vel.y) > 1;
     }
 
-    get distToGround() {
+    get sizeToBottom() {
         const xScale = this.object.width * 0.5 * this.object.scale.x;
         const yScale = this.object.height * 0.5 * this.object.scale.y;
-        return Math.abs(this.y - lerp(yScale, xScale, Math.abs(this.upNormal) / 2 + 0.5));
+        return lerp(yScale, xScale, Math.abs(this.upNormal) / 2 + 0.5);
+    }
+
+    get distToGround() {
+        return Math.abs(this.y - this.sizeToBottom);
     }
 }
