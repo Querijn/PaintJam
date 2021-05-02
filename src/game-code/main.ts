@@ -3,10 +3,11 @@ import Batter from './batter';
 
 import Camera from './camera';
 import CanObject from './can_object';
+import extraHits from 'state/extraHits.state';
+import { useRecoilState } from 'recoil';
 
 export default function main(app: Pixi.Application) {
-    const resources = Pixi.Loader;
-
+    const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
     const renderer = Pixi.autoDetectRenderer({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -21,6 +22,7 @@ export default function main(app: Pixi.Application) {
     stage.addChild(scene);
 
     app.ticker.add(update);
+    canObject.onHitsLeftChanged = (hits) => setRemainingHits(hits);
 
     function update(delta) {
         canObject.update(delta);
