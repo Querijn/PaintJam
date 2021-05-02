@@ -79,8 +79,8 @@ export default class CanObject {
 
     update(delta) {
         // Ensure that the scale data is correct
-        this.object.scale.x = 0.25 + Math.abs(this.vel.x + this.vel.y) / 400;
-        this.object.scale.y = 0.25 + Math.abs(this.vel.x + this.vel.y) / 400;
+        this.object.scale.x = 0.25 + Math.abs(this.vel.x + this.vel.y) / 800;
+        this.object.scale.y = 0.25 + Math.abs(this.vel.x + this.vel.y) / 800;
 
         this.object.anchor.x = 0.5;
         this.object.anchor.y = 0.5;
