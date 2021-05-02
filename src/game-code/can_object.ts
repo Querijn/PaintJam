@@ -12,6 +12,7 @@ export default class CanObject {
 
     private started = false;
     private hit = false;
+    private needsReset = false;
     private rotDir = 0;
     private vel: Vec2 = new Vec2();
 
@@ -69,6 +70,7 @@ export default class CanObject {
         this.object.anchor.x = 0.5;
         this.object.anchor.y = 0.5;
 
+        let frictionConstant = 1 - (this.started ? 0 : 0.01);
         if (this.started == true) {
             this.updateFlight(delta);
         } else if (this.hit) {
@@ -78,16 +80,26 @@ export default class CanObject {
             const distRight = Math.abs(rotation - (Math.PI + Math.PI * 0.5));
             this.object.rotation += distRight * delta;
         }
+
+        this.vel.x = this.vel.x * frictionConstant;
+        this.object.x += this.vel.x * delta;
+
+        if (this.needsReset == false && this.hit && this.vel.x < 0.1 && this.vel.y < 1) {
+            this.vel.reset();
+            console.log(`Score: ${this.object.x / 100} meters`);
+            this.needsReset = true;
+        }
     }
 
     reset() {
         this.object.x = 200;
         this.object.y = 200;
-        this.vel = { x: 0, y: 0 };
+        this.vel = new Vec2();
         this.hit = false;
         this.started = false;
         this.object.rotation = 0;
         this.object.zIndex = 999;
+        this.needsReset = false;
 
         this.camera.reset();
     }
@@ -96,7 +108,17 @@ export default class CanObject {
         const distToGround = Math.abs(this.object.y - this.groundHeight);
         if (this.object.y > this.groundHeight) {
             this.object.y = this.groundHeight;
-            this.vel.y *= -0.7;
+
+            // Reset Y velocity
+            if (Math.abs(this.vel.y) > 1) {
+                this.vel.y = -Math.abs(this.vel.y) * 0.7;
+            }
+
+            // If we're not really bouncing anymore, force ourselves to the ground
+            if (Math.abs(this.vel.y) < 1) {
+                this.vel.y = 0;
+            }
+
             this.rotDir = (Math.random() - 0.5) * this.vel.x * 0.1;
             console.log(`Bouncing at ${this.object.x}, ${this.object.y} => new vel = ${this.vel.y}`);
         }
@@ -105,13 +127,10 @@ export default class CanObject {
             this.object.rotation += this.rotDir * 0.4 * delta;
         }
 
-        const frictionConstant = distToGround > 1 ? 0 : -0.1;
-        this.vel.x += this.vel.x * frictionConstant * delta;
         this.vel.y += delta;
-
-        this.object.x += this.vel.x * delta;
         this.object.y += this.vel.y * delta;
 
+        // If we missed, reset the can to its original position
         if (this.hit == false && this.object.y >= this.groundHeight) {
             this.reset();
         }
@@ -119,9 +138,9 @@ export default class CanObject {
 
     onKey(event) {
         if (event.code === 'Space') {
-            if (this.started === false) {
+            if (this.needsReset) {
                 this.reset();
-
+            } else if (this.started === false) {
                 this.started = true;
                 this.hit = false;
             } else if (this.hit === false) {
@@ -161,12 +180,11 @@ export default class CanObject {
     get groundHeight() {
         const origHeight = window.innerHeight - this.object.height * 0.5;
         const distToGround = Math.abs(this.object.y - origHeight);
-        if (this.hit == false || distToGround > 1) {
+        if (this.hit == false || distToGround > 1 || this.vel.y > 1) {
             return origHeight;
         }
 
         // This means we landed.
-        console.log(`Score: ${this.object.x / 100} meters`);
         this.started = false;
         this.vel.y = 0;
         const height = lerp(this.object.width, this.object.height, Math.abs(this.upNormal) - 0.5 * 2);
