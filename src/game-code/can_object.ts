@@ -149,7 +149,6 @@ export default class CanObject {
                 this.reset();
             } else if (this.started === false) {
                 this.started = true;
-                this.hit = false;
             } else if (this.hit === false) {
                 // If we weren't hit, check if we are now
 
