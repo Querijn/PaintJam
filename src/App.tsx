@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import extraHits from 'state/extraHits.state';
 import highscoreState from 'state/highscore.state';
 import musicState from 'state/music.state';
-import { setMute } from './game-code/sound';
+import { playMusic, setMute } from './game-code/sound';
 
 import scoreState from 'state/score.state';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,21 +28,22 @@ const App = () => {
             bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
         }
         setBats(bat);
-        document.getElementById('startscreen')?.addEventListener('click', () => {
+
+        const start = () => {
+            playMusic();
             document.getElementById('startscreen')?.classList.add('fadeout');
             setTimeout(() => {
                 document.getElementById('startscreen')?.remove();
             }, Number.parseInt(document.getElementById('startscreen')?.style.animationDuration || '0'));
+        };
+
+        window.addEventListener('keyup', (event) => {
+            if (event.code === 'Space') {
+                start();
+            }
         });
 
-        document.onkeypress = function (event) {
-            if (event.code === 'Space') {
-                document.getElementById('startscreen')?.classList.add('fadeout');
-                setTimeout(() => {
-                    document.getElementById('startscreen')?.remove();
-                }, Number.parseInt(document.getElementById('startscreen')?.style.animationDuration || '0'));
-            }
-        };
+        document.getElementById('startscreen')?.addEventListener('click', start);
     }, []);
 
     useEffect(() => {

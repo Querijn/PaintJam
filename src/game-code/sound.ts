@@ -17,6 +17,11 @@ let muted = false;
 
 export function setMute(shouldMute: boolean) {
     muted = shouldMute;
+    if (muted) {
+        music.stop();
+    } else {
+        music.play();
+    }
 }
 
 export default function playSound(name: string) {
@@ -33,5 +38,7 @@ export default function playSound(name: string) {
 }
 
 export function playMusic() {
-    music.play();
+    if (!music.playing()) {
+        music.play();
+    }
 }

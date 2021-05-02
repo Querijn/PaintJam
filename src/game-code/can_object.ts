@@ -58,8 +58,8 @@ export default class CanObject {
     }
 
     reset() {
-        this.object.x = 230;
-        this.y = 600;
+        this.object.x = 270;
+        this.y = 400;
         this.vel = new Vec2();
         this.hit = false;
         this.started = false;
@@ -141,7 +141,7 @@ export default class CanObject {
     }
 
     updateFlight(delta) {
-        if (this.y - this.sizeToBottom < 0) {
+        if (this.y < this.sizeToBottom) {
             this.y = this.sizeToBottom;
 
             // Reset Y velocity
