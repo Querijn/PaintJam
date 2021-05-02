@@ -1,14 +1,14 @@
 import { Howl } from 'howler';
 
 let sounds = {
-    soupLaunch: new Howl({ src: ['/assets/sounds/soup_launch.mp3'] }),
-    batHit: new Howl({ src: ['/assets/sounds/bat_hit.mp3'] }),
-    powerUp: new Howl({ src: ['/assets/sounds/power_up.mp3'] }),
-    canGround: new Howl({ src: ['/assets/sounds/can_ground.mp3'] }),
+    soupLaunch: new Howl({ src: ['assets/sounds/soup_launch.mp3'] }),
+    batHit: new Howl({ src: ['assets/sounds/bat_hit.mp3'] }),
+    powerUp: new Howl({ src: ['assets/sounds/power_up.mp3'] }),
+    canGround: new Howl({ src: ['assets/sounds/can_ground.mp3'] }),
 };
 
 var music = new Howl({
-    src: ['/assets/Canned_Warhol_Mix_1.mp3'],
+    src: ['assets/Canned_Warhol_Mix_1.mp3'],
     loop: true,
     volume: 0.5,
 });
