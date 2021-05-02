@@ -4,12 +4,15 @@ import { lerp } from './math';
 import Vec2 from './vec2';
 
 import CanObjectImage from 'game-code/assets/can_object.png';
+import HitMarker from 'game-code/assets/hit_marker.png';
 
 export default class CanObject {
     public object: PIXI.Sprite;
+    public hitMarker: PIXI.Sprite;
     private scene: PIXI.Container;
     private camera: Camera;
     private canvas: HTMLCanvasElement;
+    private timeout = -1;
 
     private onHitCallback: ((remainingHits: number) => void) | null;
 
@@ -22,14 +25,24 @@ export default class CanObject {
     private y = 0;
 
     constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, camera: Camera) {
-        const texture = PIXI.Texture.from(CanObjectImage);
-        this.object = new PIXI.Sprite(texture);
+        this.object = new PIXI.Sprite(PIXI.Texture.from(CanObjectImage));
         this.camera = camera;
         this.canvas = canvas;
         this.onHitCallback = null;
 
         this.scene = scene;
         this.scene.addChild(this.object);
+
+        this.hitMarker = new PIXI.Sprite(PIXI.Texture.from(HitMarker));
+        this.hitMarker.x = -40;
+        this.hitMarker.y = 60;
+        this.hitMarker.rotation = -Math.PI / 4;
+        this.hitMarker.anchor.x = 0.5;
+        this.hitMarker.anchor.y = 0.5;
+        this.hitMarker.scale.x = 3.4;
+        this.hitMarker.scale.y = 3.4;
+        this.hitMarker.visible = false;
+        this.object.addChild(this.hitMarker);
 
         document.addEventListener('keyup', (e) => this.onKey(e));
         this.reset();
@@ -45,6 +58,11 @@ export default class CanObject {
         this.object.zIndex = 999;
         this.needsReset = false;
         this.extraHits = 3;
+
+        if (this.timeout != -1) {
+            window.clearTimeout(this.timeout);
+            this.timeout = -1;
+        }
 
         if (this.onHitCallback) {
             this.onHitCallback(this.remainingHits);
@@ -165,6 +183,8 @@ export default class CanObject {
                     this.vel.y *= 1.3;
                 }
 
+                this.hitMarker.visible = true;
+                this.timeout = window.setTimeout(() => (this.hitMarker.visible = false), 100);
                 this.extraHits--;
                 if (this.onHitCallback) {
                     this.onHitCallback(this.remainingHits);
