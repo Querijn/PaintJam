@@ -28,6 +28,12 @@ const App = () => {
             bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
         }
         setBats(bat);
+        document.getElementById('startscreen')?.addEventListener('click', () => {
+            document.getElementById('startscreen')?.classList.add('fadeout');
+            setTimeout(() => {
+                document.getElementById('startscreen')?.remove();
+            }, Number.parseInt(document.getElementById('startscreen')?.style.animationDuration || '0'));
+        });
     }, []);
 
     useEffect(() => {
@@ -53,6 +59,9 @@ const App = () => {
 
     return (
         <div>
+            <div className="startscreen" id="startscreen">
+                <div className="blink">Click to start.</div>
+            </div>
             <div className="ui">
                 <div className="section">{bats}</div>
                 <div className="section">Highscore: {highscore}</div>
