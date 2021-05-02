@@ -79,8 +79,8 @@ export default class CanObject {
 
     update(delta) {
         // Ensure that the scale data is correct
-        this.object.scale.x = 0.25;
-        this.object.scale.y = 0.25;
+        this.object.scale.x = 0.25 + Math.abs(this.vel.x + this.vel.y) / 400;
+        this.object.scale.y = 0.25 + Math.abs(this.vel.x + this.vel.y) / 400;
 
         this.object.anchor.x = 0.5;
         this.object.anchor.y = 0.5;
@@ -227,6 +227,6 @@ export default class CanObject {
     }
 
     get distToGround() {
-        return Math.abs(this.y - this.object.height * 0.5);
+        return Math.abs(this.y - this.object.height * 0.5 * this.object.scale.y);
     }
 }
