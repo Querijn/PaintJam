@@ -6,13 +6,13 @@ import extraHits from 'state/extraHits.state';
 
 import main from './main';
 
-const game = () => {
-    const app = new Pixi.Application({ antialias: true, backgroundColor: 0xf2ecea });
-    const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
+const app = new Pixi.Application({ antialias: true, backgroundColor: 0xf2ecea });
+window.addEventListener('resize', () => {
+    app.renderer.resize(window.innerWidth, window.innerHeight * 0.9);
+});
 
-    window.addEventListener('resize', () => {
-        app.renderer.resize(window.innerWidth, window.innerHeight * 0.9);
-    });
+const game = () => {
+    const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
 
     // Logic here
     useEffect(() => {
