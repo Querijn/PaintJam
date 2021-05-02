@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
+import ReactAudioPlayer from 'react-audio-player';
+
 import GameCode from 'game-code';
 
 import scoreState from 'state/score.state';
@@ -17,6 +19,9 @@ const App = () => {
     const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
 
     const [bats, setBats]: any = useState([]);
+    const [volume, setVolume] = useState(1.0);
+
+    const audioTune = new Audio('/assets/Canned_Warhol_Mix_1.mp3');
 
     useEffect(() => {
         let bat: JSX.Element[] = [];
@@ -25,22 +30,19 @@ const App = () => {
             bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
             console.log(`Printing bat: ${i}`);
         }
-
         setBats(bat);
     }, []);
 
-    const musicHandler = () => {
-        switch (musicMuted) {
-            case true:
-                setMusicMuted(false);
-                break;
-            case false:
-                setMusicMuted(true);
-                break;
-            default:
-                setMusicMuted(false);
-                break;
+    useEffect(() => {
+        if (musicMuted) {
+            setVolume(1.0);
+        } else {
+            setVolume(0.0);
         }
+    }, [musicMuted]);
+
+    const musicHandler = () => {
+        setMusicMuted(!musicMuted);
     };
 
     return (
@@ -50,11 +52,13 @@ const App = () => {
                 <div className="section">{score}</div>
                 <div
                     className="section"
+                    id="music"
                     onClick={() => {
                         musicHandler();
                     }}
                 >
-                    {musicMuted ? <img src={mute} alt="" /> : <img src={music} alt="" />}
+                    <ReactAudioPlayer src="/assets/Canned_Warhol_Mix_1.mp3" autoPlay volume={volume} loop />
+                    {musicMuted ? <img src={music} alt="" /> : <img src={mute} alt="" />}
                 </div>
             </div>
             <GameCode />
