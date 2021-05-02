@@ -43,7 +43,7 @@ export class ScoreResult {
             fontSize: 72,
         });
 
-        this.text = new PIXI.Text(`Score: ${this.currentScore.toFixed(0)} meters!`, style);
+        this.text = new PIXI.Text(`Score: ${this.currentScore.toFixed(0)} meters!`.toUpperCase(), style);
         this.text.x = this.canvas.width / 2;
         this.text.y = this.canvas.height / 2;
         this.text.anchor.x = 0.5;
