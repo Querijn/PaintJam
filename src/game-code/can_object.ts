@@ -140,8 +140,8 @@ export default class CanObject {
     }
 
     updateFlight(delta) {
-        if (this.y + this.sizeToBottom < 0) {
-            this.y = 0;
+        if (this.y - this.sizeToBottom < 0) {
+            this.y = this.sizeToBottom;
 
             // Reset Y velocity
             if (Math.abs(this.vel.y) > 1) {
