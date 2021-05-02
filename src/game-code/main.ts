@@ -7,6 +7,8 @@ import SignManager from './sign_manager';
 import FloorManager from './floor_scenery';
 import ScoreBoard from './score_board';
 
+import BuildingImage from 'game-code/assets/buildingleft.png';
+
 ScoreBoard.onNewHighscore = () => {
     console.log('Wow! Nice!');
 };
@@ -20,6 +22,10 @@ export default function main(app: Pixi.Application, setRemainingHits, setHighsco
     const batter = new Batter(scene, app.view, canObject);
     const signManager = new SignManager(scene, app.view, camera);
     const floorManager = new FloorManager(scene, app.view, camera);
+
+    const building = new Pixi.Sprite(Pixi.Texture.from(BuildingImage));
+    scene.addChild(building);
+
     stage.addChild(scene);
     ScoreBoard.init();
 
@@ -34,6 +40,8 @@ export default function main(app: Pixi.Application, setRemainingHits, setHighsco
     };
 
     function update(delta) {
+        building.y = app.view.height - 611;
+
         canObject.update(delta);
         batter.update(delta);
         signManager.update(delta);
