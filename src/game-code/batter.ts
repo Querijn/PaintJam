@@ -43,8 +43,14 @@ export default class Batter {
                 this.play();
             }
         };
-        document.addEventListener('keyup', play);
+        document.addEventListener('keyup', (e) => this.onKey(e));
         document.addEventListener('click', play);
+    }
+
+    onKey(event) {
+        if (event.code === 'Space') {
+            this.play();
+        }
     }
 
     update(delta) {
