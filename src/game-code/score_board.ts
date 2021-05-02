@@ -40,14 +40,14 @@ export class ScoreResult {
         const style = new PIXI.TextStyle({
             fill: '#111111',
             fontFamily: "\"pixeled\", Fallback, sans-serif",
-            fontSize: 72,
+            fontSize: 32,
         });
 
         this.text = new PIXI.Text(`Score: ${this.currentScore.toFixed(0)} meters!`.toUpperCase(), style);
         this.text.x = this.canvas.width / 2;
-        this.text.y = this.canvas.height / 2;
+        this.text.y = 50;
         this.text.anchor.x = 0.5;
-        this.text.anchor.y = 0.5;
+        this.text.anchor.y = 0;
         this.scene.parent.addChild(this.text);
     }
 
