@@ -6,8 +6,7 @@ import CanObject from './can_object';
 import extraHits from 'state/extraHits.state';
 import { useRecoilState } from 'recoil';
 
-export default function main(app: Pixi.Application) {
-    const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
+export default function main(app: Pixi.Application, setRemainingHits) {
     const renderer = Pixi.autoDetectRenderer({
         width: window.innerWidth,
         height: window.innerHeight,
