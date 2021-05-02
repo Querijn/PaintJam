@@ -21,7 +21,9 @@ export default function main(app: Pixi.Application, setRemainingHits) {
     stage.addChild(scene);
 
     app.ticker.add(update);
-    canObject.onHitsLeftChanged = (hits) => setRemainingHits(hits);
+    canObject.onHitsLeftChanged = (hits) => {
+        setRemainingHits(hits);
+    };
 
     function update(delta) {
         canObject.update(delta);

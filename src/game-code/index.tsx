@@ -19,8 +19,6 @@ const game = () => {
         main(app, setRemainingHits);
         app.renderer.resize(window.innerWidth, window.innerHeight * 0.9);
 
-        document.getElementById('music')?.addEventListener('click', () => {});
-
         document.getElementById('root')?.appendChild(app.view);
     }, []);
 

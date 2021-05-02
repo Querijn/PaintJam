@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { v4 as uuidv4 } from 'uuid';
+import GameCode from 'game-code';
+import React, { useEffect, useState } from 'react';
 
 import ReactAudioPlayer from 'react-audio-player';
-
-import GameCode from 'game-code';
+import { useRecoilState } from 'recoil';
+import extraHits from 'state/extraHits.state';
+import musicState from 'state/music.state';
 
 import scoreState from 'state/score.state';
-import musicState from 'state/music.state';
-import extraHits from 'state/extraHits.state';
+import { v4 as uuidv4 } from 'uuid';
 
 import music from './game-code/assets/ui_music_btn_1.png';
 import mute from './game-code/assets/ui_music_btn_2.png';
@@ -25,13 +24,19 @@ const App = () => {
 
     useEffect(() => {
         let bat: JSX.Element[] = [];
-        console.log(`REMAINIING HITS: ${remainingHits}`);
         for (let i = 0; i < remainingHits; i++) {
             bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
-            console.log(`Printing bat: ${i}`);
         }
         setBats(bat);
     }, []);
+
+    useEffect(() => {
+        let bat: JSX.Element[] = [];
+        for (let i = 0; i < remainingHits; i++) {
+            bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
+        }
+        setBats(bat);
+    }, [remainingHits]);
 
     useEffect(() => {
         if (musicMuted) {
