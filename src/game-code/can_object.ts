@@ -15,6 +15,7 @@ export default class CanObject {
     private needsReset = false;
     private rotDir = 0;
     private vel: Vec2 = new Vec2();
+    private extraHits = 3;
 
     constructor(scene: PIXI.Container, camera: Camera) {
         const texture = PIXI.Texture.from(CanObjectImage);
@@ -109,6 +110,7 @@ export default class CanObject {
         this.object.rotation = 0;
         this.object.zIndex = 999;
         this.needsReset = false;
+        this.extraHits = 3;
 
         this.camera.reset();
     }
@@ -179,6 +181,16 @@ export default class CanObject {
                 } else {
                     console.log(`Swing, miss: ${this.object.y} (${this.minHitHeight}, ${this.maxHitHeight})`);
                 }
+            } else if (this.extraHits > 0) {
+                // We're hitting it after launch
+                if (this.vel.y > 0) {
+                    // Invert without friction
+                    this.vel.y *= -1;
+                } else {
+                    // Small boost if we were going up
+                    this.vel.y *= 1.3;
+                }
+                this.extraHits--;
             }
         }
     }
@@ -212,5 +224,9 @@ export default class CanObject {
 
     get maxHitHeight() {
         return 600;
+    }
+
+    get remainingHits() {
+        return this.extraHits;
     }
 }
