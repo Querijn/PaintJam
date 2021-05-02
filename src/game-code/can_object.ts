@@ -73,12 +73,22 @@ export default class CanObject {
         let frictionConstant = 1 - (this.started ? 0 : 0.01);
         if (this.started == true) {
             this.updateFlight(delta);
-        } else if (this.hit) {
-            // Make the can fall over on the floor.
-            this.vel.y = 0;
-            const rotation = this.object.rotation % (Math.PI * 2);
-            const distRight = Math.abs(rotation - (Math.PI + Math.PI * 0.5));
-            this.object.rotation += distRight * delta;
+        } else if (this.hit && this.needsReset == false) {
+            this.vel.y = 0; // Is this still needed?
+
+            // Make the can settle its rotation on the floor.
+            const rotation = this.upNormal;
+            const distLeft = Math.abs(-1 - rotation);
+            const distRight = Math.abs(1 - rotation);
+
+            if (distLeft > 0.01 || distRight > 0.01) {
+                if (distLeft < distRight) {
+                    this.object.rotation -= distLeft * delta * 0.1;
+                } else {
+                    this.object.rotation += distRight * delta * 0.1;
+                }
+            }
+            console.log(`Fixing rot.. ${rotation}`);
         }
 
         this.vel.x = this.vel.x * frictionConstant;
@@ -104,6 +114,12 @@ export default class CanObject {
         this.camera.reset();
     }
 
+    setupRotDir() {
+        const yInfluence = Math.abs(this.vel.y) / 40;
+        const xInfluence = this.vel.x * 0.1;
+        this.rotDir = Math.random() * this.upNormal * yInfluence * xInfluence;
+    }
+
     updateFlight(delta) {
         const distToGround = Math.abs(this.object.y - this.groundHeight);
         if (this.object.y > this.groundHeight) {
@@ -119,8 +135,7 @@ export default class CanObject {
                 this.vel.y = 0;
             }
 
-            this.rotDir = (Math.random() - 0.5) * this.vel.x * 0.1;
-            console.log(`Bouncing at ${this.object.x}, ${this.object.y} => new vel = ${this.vel.y}`);
+            this.setupRotDir();
         }
 
         if (this.hit && distToGround > 1) {
@@ -159,7 +174,7 @@ export default class CanObject {
                     this.vel.y = -100 * cs;
 
                     console.log(`Swing, hit: ${this.object.y} (${this.minHitHeight}, ${this.maxHitHeight}) => ${this.vel.x}, ${this.vel.y}`);
-                    this.rotDir = (Math.random() - 0.5) * 2 * this.vel.x;
+                    this.setupRotDir();
 
                     this.hit = true;
                 } else {
@@ -171,10 +186,7 @@ export default class CanObject {
 
     // Rotation as a value between -1 and 1
     get upNormal() {
-        let rot = this.object.rotation;
-        rot %= Math.PI * 2;
-        rot /= Math.PI * 2;
-        return rot;
+        return Math.sin(this.object.rotation + Math.PI / 2);
     }
 
     get groundHeight() {
