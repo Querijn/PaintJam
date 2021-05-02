@@ -22,6 +22,8 @@ export default class CanObject {
     private canvas: HTMLCanvasElement;
     private timeout = -1;
     private result: ScoreResult | null = null;
+    private signManager: SignManager;
+    private floorManager: FloorManager;
 
     private onHitCallback: ((remainingHits: number) => void) | null;
 
@@ -34,11 +36,13 @@ export default class CanObject {
     private extraHits = 3;
     private y = 0;
 
-    constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, camera: Camera) {
+    constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, camera: Camera, signManager: SignManager, floorManager: FloorManager) {
         this.object = new PIXI.Sprite(PIXI.Texture.from(CanObjectImage));
         this.camera = camera;
         this.canvas = canvas;
         this.onHitCallback = null;
+        this.signManager = signManager;
+        this.floorManager = floorManager;
 
         this.scene = scene;
         this.scene.addChild(this.object);
@@ -56,10 +60,10 @@ export default class CanObject {
 
         document.addEventListener('keyup', (e) => this.onKey(e));
         document.addEventListener('click', (e) => this.onPointer());
-        this.reset();
+        this.reset(true);
     }
 
-    reset() {
+    reset(initial = false) {
         this.object.x = 270;
         this.y = 400;
         this.vel = new Vec2();
@@ -86,6 +90,11 @@ export default class CanObject {
         }
 
         this.camera.reset();
+
+        if (!initial) {
+            this.signManager.reset();
+            this.floorManager.reset();
+        }
     }
 
     setupRotDir() {
