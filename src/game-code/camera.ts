@@ -106,7 +106,7 @@ export default class Camera {
         this.close.tilePosition.x -= 1.0 * offset;
         this.mid.tilePosition.x -= 0.7 * offset;
         this.farthest.tilePosition.x -= 0.3 * offset;
-        this.ground.tilePosition.x -= 0.3 * offset;
+        this.ground.tilePosition.x -= offset;
 
         const targetX = this.canvas.width / 2 - this.x;
         const targetY = this.canvas.height * 0.75 - this.y;
