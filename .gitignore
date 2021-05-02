@@ -342,3 +342,4 @@ MigrationBackup/
 .ionide/
 FodyWeavers.xsd
 .idea
+build
