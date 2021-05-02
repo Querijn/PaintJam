@@ -88,7 +88,6 @@ export default class CanObject {
                     this.object.rotation += distRight * delta * 0.1;
                 }
             }
-            console.log(`Fixing rot.. ${rotation}`);
         }
 
         this.vel.x = this.vel.x * frictionConstant;
