@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useRecoilState } from 'recoil';
 import extraHits from 'state/extraHits.state';
+import highscoreState from 'state/highscore.state';
 import musicState from 'state/music.state';
 import { setMute } from './game-code/sound';
 
@@ -13,6 +14,7 @@ import music from './game-code/assets/ui_music_btn_1.png';
 import mute from './game-code/assets/ui_music_btn_2.png';
 
 const App = () => {
+    const [highscore, setHighscore] = useRecoilState(highscoreState);
     const [score, setScore] = useRecoilState(scoreState);
     const [musicMuted, setMusicMuted] = useRecoilState(musicState);
     const [remainingHits, setRemainingHits] = useRecoilState(extraHits);
@@ -53,7 +55,7 @@ const App = () => {
         <div>
             <div className="ui">
                 <div className="section">{bats}</div>
-                <div className="section">{score}</div>
+                <div className="section">Highscore: {highscore}</div>
                 <div
                     className="section"
                     id="music"

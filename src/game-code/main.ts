@@ -11,7 +11,7 @@ ScoreBoard.onNewHighscore = () => {
     console.log('Wow! Nice!');
 };
 
-export default function main(app: Pixi.Application, setRemainingHits) {
+export default function main(app: Pixi.Application, setRemainingHits, setHighscore, setScore) {
     const stage = app.stage;
     const scene = new Pixi.Container();
 
@@ -23,7 +23,12 @@ export default function main(app: Pixi.Application, setRemainingHits) {
     stage.addChild(scene);
     ScoreBoard.init();
 
+    ScoreBoard.onNewHighscore = (score) => {
+        setHighscore(score.toFixed(0));
+    };
+
     app.ticker.add(update);
+
     canObject.onHitsLeftChanged = (hits) => {
         setRemainingHits(hits);
     };
