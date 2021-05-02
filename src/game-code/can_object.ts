@@ -75,19 +75,10 @@ export default class CanObject {
         if (this.started == true) {
             this.updateFlight(delta);
         } else if (this.hit && this.needsReset == false) {
-            this.vel.y = 0; // Is this still needed?
+            const rotationLeft = Math.abs(this.upNormal);
 
-            // Make the can settle its rotation on the floor.
-            const rotation = this.upNormal;
-            const distLeft = Math.abs(-1 - rotation);
-            const distRight = Math.abs(1 - rotation);
-
-            if (distLeft > 0.01 || distRight > 0.01) {
-                if (distLeft < distRight) {
-                    this.object.rotation -= distLeft * delta * 0.1;
-                } else {
-                    this.object.rotation += distRight * delta * 0.1;
-                }
+            if (rotationLeft > 0.01) {
+                this.object.rotation += rotationLeft * delta * 0.1;
             }
         }
 
