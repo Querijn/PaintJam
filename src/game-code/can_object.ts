@@ -227,6 +227,8 @@ export default class CanObject {
     }
 
     get distToGround() {
-        return Math.abs(this.y - this.object.height * 0.5 * this.object.scale.y);
+        const xScale = this.object.width * 0.5 * this.object.scale.x;
+        const yScale = this.object.height * 0.5 * this.object.scale.y;
+        return Math.abs(this.y - lerp(yScale, xScale, Math.abs(this.upNormal) / 2 + 0.5));
     }
 }
