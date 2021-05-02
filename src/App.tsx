@@ -34,6 +34,15 @@ const App = () => {
                 document.getElementById('startscreen')?.remove();
             }, Number.parseInt(document.getElementById('startscreen')?.style.animationDuration || '0'));
         });
+
+        document.onkeypress = function (event) {
+            if (event.code === 'Space') {
+                document.getElementById('startscreen')?.classList.add('fadeout');
+                setTimeout(() => {
+                    document.getElementById('startscreen')?.remove();
+                }, Number.parseInt(document.getElementById('startscreen')?.style.animationDuration || '0'));
+            }
+        };
     }, []);
 
     useEffect(() => {
