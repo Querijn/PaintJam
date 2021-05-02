@@ -117,4 +117,8 @@ export default class Camera {
         this.scene.x -= distX * delta;
         // this.scene.y -= distY * delta;
     }
+
+    get offset() {
+        return -this.scene.x;
+    }
 }
