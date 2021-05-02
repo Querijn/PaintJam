@@ -21,3 +21,34 @@ body
   canvas
     width: 100vw
     height: 100vh
+
+.ui
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
+  width: 100vw
+  height: 10%
+  pointer-events: none
+  z-index: 9999
+  font-family: 'Comic Sans MS', sans-serif
+  color: #222
+  font-size: 2rem
+  flex-direction: row
+  display: flex
+  justify-content: center
+  align-items: center
+  > div
+    &:first-child
+      justify-content: flex-start
+      padding-left: 2%
+    &:last-child
+      justify-content: flex-end
+      padding-right: 2%
+      pointer-events: initial
+      cursor: pointer
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    text-align: center
