@@ -6,6 +6,7 @@ import Vec2 from './vec2';
 import CanObjectImage from 'game-code/assets/can_object.png';
 import HitMarker from 'game-code/assets/hit_marker.png';
 import { ScoreResult } from './score_board';
+import playSound from './sound';
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -114,8 +115,6 @@ export default class CanObject {
             this.vel.y = 0;
         }
 
-        // This means we landed.
-
         let frictionConstant = 1 - (this.started ? 0 : 0.01);
         if (this.started == true) {
             this.updateFlight(delta);
@@ -147,6 +146,7 @@ export default class CanObject {
             // Reset Y velocity
             if (Math.abs(this.vel.y) > 1) {
                 this.vel.y = Math.abs(this.vel.y) * 0.7;
+                playSound('canGround');
             }
 
             // If we're not really bouncing anymore, force ourselves to the ground
@@ -193,12 +193,15 @@ export default class CanObject {
 
                     console.log(`Swing, hit: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight}) => ${this.vel.x}, ${this.vel.y}`);
                     this.setupRotDir();
+                    playSound('soupLaunch');
+                    playSound('batHit');
 
                     this.hit = true;
                 } else {
                     console.log(`Swing, miss: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight})`);
                 }
             } else if (this.extraHits > 0) {
+                playSound('batHit');
                 // We're hitting it after launch
                 if (this.vel.y < 0) {
                     // Invert without friction
@@ -216,6 +219,8 @@ export default class CanObject {
                 if (this.onHitCallback) {
                     this.onHitCallback(this.remainingHits);
                 }
+            } else {
+                playSound('powerUp');
             }
         }
     }

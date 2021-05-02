@@ -1,10 +1,10 @@
 import GameCode from 'game-code';
 import React, { useEffect, useState } from 'react';
 
-import ReactAudioPlayer from 'react-audio-player';
 import { useRecoilState } from 'recoil';
 import extraHits from 'state/extraHits.state';
 import musicState from 'state/music.state';
+import { setMute } from './game-code/sound';
 
 import scoreState from 'state/score.state';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,8 +19,6 @@ const App = () => {
 
     const [bats, setBats]: any = useState([]);
     const [volume, setVolume] = useState(1.0);
-
-    const audioTune = new Audio('/assets/Canned_Warhol_Mix_1.mp3');
 
     useEffect(() => {
         let bat: JSX.Element[] = [];
@@ -48,6 +46,7 @@ const App = () => {
 
     const musicHandler = () => {
         setMusicMuted(!musicMuted);
+        setMute(musicMuted);
     };
 
     return (
@@ -62,7 +61,6 @@ const App = () => {
                         musicHandler();
                     }}
                 >
-                    <ReactAudioPlayer src="/assets/Canned_Warhol_Mix_1.mp3" autoPlay volume={volume} loop />
                     {musicMuted ? <img src={music} alt="" /> : <img src={mute} alt="" />}
                 </div>
             </div>
