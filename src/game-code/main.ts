@@ -1,4 +1,5 @@
 import * as Pixi from 'pixi.js';
+import Batter from './batter';
 
 import Camera from './camera';
 import CanObject from './can_object';
@@ -16,6 +17,7 @@ export default function main(app: Pixi.Application) {
 
     const camera = new Camera(scene, app.stage, 0, 0);
     const canObject = new CanObject(scene, camera);
+    const batter = new Batter(scene, canObject);
     stage.addChild(scene);
 
     app.ticker.add(update);

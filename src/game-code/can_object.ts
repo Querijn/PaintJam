@@ -93,8 +93,8 @@ export default class CanObject {
     }
 
     reset() {
-        this.object.x = 200;
-        this.object.y = 200;
+        this.object.x = 230;
+        this.object.y = window.innerHeight - 600;
         this.vel = new Vec2();
         this.hit = false;
         this.started = false;
@@ -210,14 +210,18 @@ export default class CanObject {
     }
 
     get minHitHeight() {
-        return 400;
+        return window.innerHeight - 300;
     }
 
     get maxHitHeight() {
-        return 600;
+        return window.innerHeight - 100;
     }
 
     get remainingHits() {
         return this.extraHits;
+    }
+
+    get isFalling() {
+        return this.started && Math.abs(this.vel.y) > 1;
     }
 }
