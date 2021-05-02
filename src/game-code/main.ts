@@ -3,9 +3,12 @@ import Batter from './batter';
 
 import Camera from './camera';
 import CanObject from './can_object';
-import extraHits from 'state/extraHits.state';
-import { useRecoilState } from 'recoil';
 import SignManager from './sign_manager';
+import ScoreBoard from './score_board';
+
+ScoreBoard.onNewHighscore = () => {
+    console.log('Wow! Nice!');
+};
 
 export default function main(app: Pixi.Application, setRemainingHits) {
     const stage = app.stage;
@@ -16,6 +19,7 @@ export default function main(app: Pixi.Application, setRemainingHits) {
     const batter = new Batter(scene, app.view, canObject);
     const signManager = new SignManager(scene, app.view, camera);
     stage.addChild(scene);
+    ScoreBoard.init();
 
     app.ticker.add(update);
     canObject.onHitsLeftChanged = (hits) => {

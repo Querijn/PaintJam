@@ -5,6 +5,11 @@ import Vec2 from './vec2';
 
 import CanObjectImage from 'game-code/assets/can_object.png';
 import HitMarker from 'game-code/assets/hit_marker.png';
+import { ScoreResult } from './score_board';
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default class CanObject {
     public object: PIXI.Sprite;
@@ -13,12 +18,14 @@ export default class CanObject {
     private camera: Camera;
     private canvas: HTMLCanvasElement;
     private timeout = -1;
+    private result: ScoreResult | null = null;
 
     private onHitCallback: ((remainingHits: number) => void) | null;
 
     private started = false;
     private hit = false;
     private needsReset = false;
+    private waitingForScore = false;
     private rotDir = 0;
     private vel: Vec2 = new Vec2();
     private extraHits = 3;
@@ -57,7 +64,13 @@ export default class CanObject {
         this.object.rotation = 0;
         this.object.zIndex = 999;
         this.needsReset = false;
+        this.waitingForScore = false;
         this.extraHits = 3;
+
+        if (this.result) {
+            this.result.hide();
+        }
+        this.result = null;
 
         if (this.timeout != -1) {
             window.clearTimeout(this.timeout);
@@ -77,7 +90,17 @@ export default class CanObject {
         this.rotDir = Math.random() * this.upNormal * yInfluence * xInfluence;
     }
 
+    async showResult() {
+        this.result = new ScoreResult(this.scene, this.canvas, this.currentScore);
+        await sleep(500);
+        this.waitingForScore = false;
+    }
+
     update(delta) {
+        if (this.result) {
+            this.result.update(delta);
+        }
+
         // Ensure that the scale data is correct
         this.object.scale.x = 0.25 + Math.abs(this.vel.x + this.vel.y) / 800;
         this.object.scale.y = 0.25 + Math.abs(this.vel.x + this.vel.y) / 800;
@@ -112,6 +135,8 @@ export default class CanObject {
             this.vel.reset();
             console.log(`Score: ${this.object.x / 100} meters`);
             this.needsReset = true;
+            this.waitingForScore = true;
+            this.showResult();
         }
     }
 
@@ -147,7 +172,7 @@ export default class CanObject {
 
     onKey(event) {
         if (event.code === 'Space') {
-            if (this.needsReset) {
+            if (this.needsReset && this.waitingForScore == false) {
                 this.reset();
             } else if (this.started === false) {
                 this.started = true;
