@@ -70,16 +70,16 @@ export default class Camera {
     // Frame update
     update(delta) {
         const offset = this.x - this.prevX;
-        this.close.tilePosition.x -= 1.0 * offset;
-        this.mid.tilePosition.x -= 0.7 * offset;
-        this.farthest.tilePosition.x -= 0.3 * offset;
-
         this.prevX = this.x;
         this.prevY = this.y;
 
         if (this.enabled === false || this.x < window.innerWidth / 2) {
             return;
         }
+
+        this.close.tilePosition.x -= 1.0 * offset;
+        this.mid.tilePosition.x -= 0.7 * offset;
+        this.farthest.tilePosition.x -= 0.3 * offset;
 
         const targetX = window.innerWidth / 2 - this.x;
         const targetY = window.innerHeight * 0.75 - this.y;
