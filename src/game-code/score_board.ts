@@ -39,7 +39,7 @@ export class ScoreResult {
         // prettier-ignore
         const style = new PIXI.TextStyle({
             fill: '#111111',
-            fontFamily: '\"Comic Sans MS\", cursive, sans-serif',
+			fontFamily: "\"pixeled\", Fallback, sans-serif",
             fontSize: 72,
         });
 

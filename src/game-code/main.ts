@@ -14,41 +14,46 @@ ScoreBoard.onNewHighscore = () => {
 };
 
 export default function main(app: Pixi.Application, setRemainingHits, setHighscore, setScore) {
-    const stage = app.stage;
-    const scene = new Pixi.Container();
+    const loader = new Pixi.Loader();
+    loader.add('pixeled', 'assets/Pixeled.ttf');
 
-    const camera = new Camera(scene, app.view, app.stage, 0, 0);
-    const canObject = new CanObject(scene, app.view, camera);
-    const batter = new Batter(scene, app.view, canObject);
-    const floorManager = new FloorManager(scene, app.view, camera);
-    const signManager = new SignManager(scene, app.view, camera);
+    loader.load(() => {
+        const stage = app.stage;
+        const scene = new Pixi.Container();
 
-    const building = new Pixi.Sprite(Pixi.Texture.from(BuildingImage));
-    scene.addChild(building);
+        const camera = new Camera(scene, app.view, app.stage, 0, 0);
+        const canObject = new CanObject(scene, app.view, camera);
+        const batter = new Batter(scene, app.view, canObject);
+        const floorManager = new FloorManager(scene, app.view, camera);
+        const signManager = new SignManager(scene, app.view, camera);
 
-    stage.addChild(scene);
-    ScoreBoard.init();
+        const building = new Pixi.Sprite(Pixi.Texture.from(BuildingImage));
+        scene.addChild(building);
 
-    ScoreBoard.onNewHighscore = (score) => {
-        setHighscore(score.toFixed(0));
-    };
+        stage.addChild(scene);
+        ScoreBoard.init();
 
-    app.ticker.add(update);
+        ScoreBoard.onNewHighscore = (score) => {
+            setHighscore(score.toFixed(0));
+        };
 
-    canObject.onHitsLeftChanged = (hits) => {
-        setRemainingHits(hits);
-    };
+        app.ticker.add(update);
 
-    function update(delta) {
-        building.y = app.view.height - 611;
+        canObject.onHitsLeftChanged = (hits) => {
+            setRemainingHits(hits);
+        };
 
-        canObject.update(delta);
-        batter.update(delta);
-        floorManager.update(delta);
-        signManager.update(delta);
+        function update(delta) {
+            building.y = app.view.height - 611;
 
-        camera.enabled = canObject.wasHit;
-        camera.moveTo(canObject.object.x, canObject.object.y);
-        camera.update(delta);
-    }
+            canObject.update(delta);
+            batter.update(delta);
+            floorManager.update(delta);
+            signManager.update(delta);
+
+            camera.enabled = canObject.wasHit;
+            camera.moveTo(canObject.object.x, canObject.object.y);
+            camera.update(delta);
+        }
+    });
 }

@@ -6,8 +6,8 @@ import SignImage from 'game-code/assets/sign_marker.png';
 // prettier-ignore
 const SignStyle = new PIXI.TextStyle({
     fill: 'white',
-    fontFamily: "\"Comic Sans MS\", cursive, sans-serif",
-    fontSize: 28
+    fontFamily: "\"pixeled\", Fallback, sans-serif",
+    fontSize: 20
 });
 
 class Sign extends PIXI.Sprite {
@@ -19,8 +19,8 @@ class Sign extends PIXI.Sprite {
         this.text.rotation = -0.06;
         this.text.anchor.x = 0.5;
         this.text.anchor.y = 0.5;
-        this.text.x = 38;
-        this.text.y = 30;
+        this.text.x = 40;
+        this.text.y = 26;
         this.addChild(this.text);
     }
 }
@@ -48,7 +48,7 @@ export default class SignManager {
     }
 
     reset() {
-        this.nextSignOffset = 1000;
+        this.nextSignOffset = 10000;
         this.updateSigns(true);
     }
 
