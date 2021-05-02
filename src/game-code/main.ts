@@ -22,10 +22,10 @@ export default function main(app: Pixi.Application, setRemainingHits, setHighsco
         const scene = new Pixi.Container();
 
         const camera = new Camera(scene, app.view, app.stage, 0, 0);
-        const canObject = new CanObject(scene, app.view, camera);
-        const batter = new Batter(scene, app.view, canObject);
         const floorManager = new FloorManager(scene, app.view, camera);
         const signManager = new SignManager(scene, app.view, camera);
+        const canObject = new CanObject(scene, app.view, camera, signManager, floorManager);
+        const batter = new Batter(scene, app.view, canObject);
 
         const building = new Pixi.Sprite(Pixi.Texture.from(BuildingImage));
         scene.addChild(building);

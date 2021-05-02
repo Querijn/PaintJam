@@ -30,7 +30,7 @@ export default class SignManager {
     private scene: PIXI.Container;
     private canvas: HTMLCanvasElement;
     private camera: Camera;
-    private nextSignOffset = 10000;
+    private nextSignOffset = 1000;
 
     constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, camera: Camera) {
         this.canvas = canvas;
@@ -48,7 +48,7 @@ export default class SignManager {
     }
 
     reset() {
-        this.nextSignOffset = 10000;
+        this.nextSignOffset = 1000;
         this.updateSigns(true);
     }
 

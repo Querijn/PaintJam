@@ -7,6 +7,8 @@ import CanObjectImage from 'game-code/assets/can_object.png';
 import HitMarker from 'game-code/assets/hit_marker.png';
 import { ScoreResult } from './score_board';
 import playSound from './sound';
+import SignManager from './sign_manager';
+import FloorManager from './floor_scenery';
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));

@@ -14,7 +14,7 @@ export default class FloorManager {
     private scene: PIXI.Container;
     private canvas: HTMLCanvasElement;
     private camera: Camera;
-    private nextSignOffset = 10000;
+    private nextSignOffset = 1000;
 
     constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, camera: Camera) {
         this.canvas = canvas;
