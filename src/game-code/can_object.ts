@@ -183,6 +183,8 @@ export default class CanObject {
                     this.vel.y *= 1.3;
                 }
 
+                this.vel.x *= 1.1; // Small boost forward
+
                 this.hitMarker.visible = true;
                 this.timeout = window.setTimeout(() => (this.hitMarker.visible = false), 100);
                 this.extraHits--;
