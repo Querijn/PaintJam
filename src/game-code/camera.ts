@@ -1,7 +1,10 @@
 import * as Pixi from 'pixi.js';
 
+const yOffset = 75;
+
 export default class Camera {
     public enabled: boolean;
+    private canvas: HTMLCanvasElement;
 
     private x: number = 0;
     private y: number = 0;
@@ -14,20 +17,19 @@ export default class Camera {
     private mid: Pixi.TilingSprite;
     private close: Pixi.TilingSprite;
 
-    constructor(scene: Pixi.Container, stage: Pixi.Container, x: number, y: number) {
-        const yOffset = 75;
-
+    constructor(scene: Pixi.Container, canvas: HTMLCanvasElement, stage: Pixi.Container, x: number, y: number) {
         this.moveTo(x, y);
         this.enabled = false;
         this.scene = scene;
+        this.canvas = canvas;
 
         // Setup background
-        this.close = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_1.png'), window.innerWidth, window.innerHeight);
-        this.mid = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_2.png'), window.innerWidth, window.innerHeight);
-        this.farthest = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_3.png'), window.innerWidth, window.innerHeight);
+        this.close = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_1.png'), this.canvas.width, this.canvas.height);
+        this.mid = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_2.png'), this.canvas.width, this.canvas.height);
+        this.farthest = new Pixi.TilingSprite(Pixi.Texture.from('assets/layer_3.png'), this.canvas.width, this.canvas.height);
 
         this.farthest.position.x = 0;
-        this.farthest.position.y = window.innerHeight - 720 + yOffset;
+        this.farthest.position.y = this.canvas.height - 720 + yOffset;
         this.farthest.scale.y = 1;
         this.farthest.tilePosition.x = 0;
         this.farthest.tilePosition.y = -yOffset;
@@ -36,7 +38,7 @@ export default class Camera {
         stage.addChild(this.farthest);
 
         this.mid.position.x = 0;
-        this.mid.position.y = window.innerHeight - 720 + yOffset;
+        this.mid.position.y = this.canvas.height - 720 + yOffset;
         this.mid.tilePosition.x = 0;
         this.mid.tilePosition.y = -yOffset;
         this.mid.scale.y = 1;
@@ -44,7 +46,7 @@ export default class Camera {
         stage.addChild(this.mid);
 
         this.close.position.x = 0;
-        this.close.position.y = window.innerHeight - 720 + yOffset;
+        this.close.position.y = this.canvas.height - 720 + yOffset;
         this.close.tilePosition.x = 0;
         this.close.tilePosition.y = -yOffset;
         this.close.zIndex = -1;
@@ -69,11 +71,23 @@ export default class Camera {
 
     // Frame update
     update(delta) {
+        this.farthest.position.y = this.canvas.height - 720 + yOffset;
+        this.mid.position.y = this.canvas.height - 720 + yOffset;
+        this.close.position.y = this.canvas.height - 720 + yOffset;
+
+        this.farthest.width = this.canvas.width;
+        this.mid.width = this.canvas.width;
+        this.close.width = this.canvas.width;
+
+        this.farthest.height = this.canvas.height;
+        this.mid.height = this.canvas.height;
+        this.close.height = this.canvas.height;
+
         const offset = this.x - this.prevX;
         this.prevX = this.x;
         this.prevY = this.y;
 
-        if (this.enabled === false || this.x < window.innerWidth / 2) {
+        if (this.enabled === false || this.x < this.canvas.width / 2) {
             return;
         }
 
@@ -81,8 +95,8 @@ export default class Camera {
         this.mid.tilePosition.x -= 0.7 * offset;
         this.farthest.tilePosition.x -= 0.3 * offset;
 
-        const targetX = window.innerWidth / 2 - this.x;
-        const targetY = window.innerHeight * 0.75 - this.y;
+        const targetX = this.canvas.width / 2 - this.x;
+        const targetY = this.canvas.height * 0.75 - this.y;
 
         const distX = this.scene.x - targetX;
         const distY = this.scene.y - targetY;

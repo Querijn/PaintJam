@@ -15,15 +15,16 @@ export default function main(app: Pixi.Application) {
     const stage = app.stage;
     const scene = new Pixi.Container();
 
-    const camera = new Camera(scene, app.stage, 0, 0);
-    const canObject = new CanObject(scene, camera);
-    const batter = new Batter(scene, canObject);
+    const camera = new Camera(scene, app.view, app.stage, 0, 0);
+    const canObject = new CanObject(scene, app.view, camera);
+    const batter = new Batter(scene, app.view, canObject);
     stage.addChild(scene);
 
     app.ticker.add(update);
 
     function update(delta) {
         canObject.update(delta);
+        batter.update(delta);
 
         camera.enabled = canObject.wasHit;
         camera.moveTo(canObject.object.x, canObject.object.y);

@@ -12,9 +12,11 @@ import CanObject from './can_object';
 export default class Batter {
     private object: PIXI.AnimatedSprite;
     private canObject: CanObject;
+    private canvas: HTMLCanvasElement;
 
-    constructor(scene: PIXI.Container, canObject: CanObject) {
+    constructor(scene: PIXI.Container, canvas: HTMLCanvasElement, canObject: CanObject) {
         this.canObject = canObject;
+        this.canvas = canvas;
 
         let textureArray: PIXI.Texture[] = [
             // PIXI.Texture.from(BatterFrame1),
@@ -32,7 +34,6 @@ export default class Batter {
         ];
 
         this.object = new PIXI.AnimatedSprite(textureArray);
-        this.object.y = window.innerHeight - 335;
         scene.addChild(this.object);
 
         this.object.loop = false;
@@ -41,6 +42,10 @@ export default class Batter {
                 this.play();
             }
         });
+    }
+
+    update(delta) {
+        this.object.y = this.canvas.height - 335;
     }
 
     play(onDone?: () => void) {
