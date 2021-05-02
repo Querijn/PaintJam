@@ -77,7 +77,7 @@ export default class Camera {
         this.prevX = this.x;
         this.prevY = this.y;
 
-        if (this.enabled === false) {
+        if (this.enabled === false || this.x < window.innerWidth / 2) {
             return;
         }
 
