@@ -11,6 +11,8 @@ export default class CanObject {
     private camera: Camera;
     private canvas: HTMLCanvasElement;
 
+    private onHitCallback: ((remainingHits: number) => void) | null;
+
     private started = false;
     private hit = false;
     private needsReset = false;
@@ -24,6 +26,7 @@ export default class CanObject {
         this.object = new PIXI.Sprite(texture);
         this.camera = camera;
         this.canvas = canvas;
+        this.onHitCallback = null;
 
         this.scene = scene;
         this.scene.addChild(this.object);
@@ -42,6 +45,10 @@ export default class CanObject {
         this.object.zIndex = 999;
         this.needsReset = false;
         this.extraHits = 3;
+
+        if (this.onHitCallback) {
+            this.onHitCallback(this.remainingHits);
+        }
 
         this.camera.reset();
     }
@@ -157,9 +164,17 @@ export default class CanObject {
                     // Small boost if we were going up
                     this.vel.y *= 1.3;
                 }
+
                 this.extraHits--;
+                if (this.onHitCallback) {
+                    this.onHitCallback(this.remainingHits);
+                }
             }
         }
+    }
+
+    set onHitsLeftChanged(callback: (remainingHits: number) => void) {
+        this.onHitCallback = callback;
     }
 
     // Rotation as a value between -1 and 1
