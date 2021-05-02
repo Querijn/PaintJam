@@ -20,8 +20,8 @@ export default function main(app: Pixi.Application, setRemainingHits, setHighsco
     const camera = new Camera(scene, app.view, app.stage, 0, 0);
     const canObject = new CanObject(scene, app.view, camera);
     const batter = new Batter(scene, app.view, canObject);
-    const signManager = new SignManager(scene, app.view, camera);
     const floorManager = new FloorManager(scene, app.view, camera);
+    const signManager = new SignManager(scene, app.view, camera);
 
     const building = new Pixi.Sprite(Pixi.Texture.from(BuildingImage));
     scene.addChild(building);
@@ -44,8 +44,8 @@ export default function main(app: Pixi.Application, setRemainingHits, setHighsco
 
         canObject.update(delta);
         batter.update(delta);
-        signManager.update(delta);
         floorManager.update(delta);
+        signManager.update(delta);
 
         camera.enabled = canObject.wasHit;
         camera.moveTo(canObject.object.x, canObject.object.y);
