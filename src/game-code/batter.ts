@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-// import BatterFrame1 from 'game-code/assets/warhol_1.png';
+import BatterFrame1 from 'game-code/assets/warhol_1.png';
 import BatterFrame2 from 'game-code/assets/warhol_2.png';
 import BatterFrame3 from 'game-code/assets/warhol_3.png';
 import BatterFrame4 from 'game-code/assets/warhol_4.png';
@@ -19,7 +19,7 @@ export default class Batter {
         this.canvas = canvas;
 
         let textureArray: PIXI.Texture[] = [
-            // PIXI.Texture.from(BatterFrame1),
+            PIXI.Texture.from(BatterFrame1),
             PIXI.Texture.from(BatterFrame2),
             PIXI.Texture.from(BatterFrame3),
             PIXI.Texture.from(BatterFrame4),
@@ -30,7 +30,7 @@ export default class Batter {
             PIXI.Texture.from(BatterFrame4),
             PIXI.Texture.from(BatterFrame3),
             PIXI.Texture.from(BatterFrame2),
-            // PIXI.Texture.from(BatterFrame1),
+            PIXI.Texture.from(BatterFrame1),
         ];
 
         this.object = new PIXI.AnimatedSprite(textureArray);
