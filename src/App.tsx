@@ -49,7 +49,7 @@ const App = () => {
     useEffect(() => {
         let bat: JSX.Element[] = [];
         for (let i = 0; i < remainingHits; i++) {
-            bat.push(<img src={'/assets/ui_bat.png'} key={uuidv4()} alt="" />);
+            bat.push(<img src={'/assets/ui_bat.png'} className="icons" key={uuidv4()} alt="" />);
         }
         setBats(bat);
     }, [remainingHits]);
@@ -82,7 +82,7 @@ const App = () => {
                         musicHandler();
                     }}
                 >
-                    {musicMuted ? <img src={music} alt="" /> : <img src={mute} alt="" />}
+                    {musicMuted ? <img src={music} className="icons" alt="" /> : <img src={mute} className="icons" alt="" />}
                 </div>
             </div>
             <GameCode />
