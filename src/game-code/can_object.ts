@@ -150,7 +150,7 @@ export default class CanObject {
                 }
             } else if (this.extraHits > 0) {
                 // We're hitting it after launch
-                if (this.vel.y > 0) {
+                if (this.vel.y < 0) {
                     // Invert without friction
                     this.vel.y *= -1;
                 } else {
