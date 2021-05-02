@@ -221,6 +221,10 @@ export default class CanObject {
         return this.extraHits;
     }
 
+    get currentScore() {
+        return this.object.x / 100;
+    }
+
     get isFalling() {
         return this.started && Math.abs(this.vel.y) > 1;
     }
