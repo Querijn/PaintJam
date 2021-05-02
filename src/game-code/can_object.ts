@@ -53,6 +53,7 @@ export default class CanObject {
         this.object.addChild(this.hitMarker);
 
         document.addEventListener('keyup', (e) => this.onKey(e));
+        document.addEventListener('click', (e) => this.onPointer());
         this.reset();
     }
 
@@ -172,56 +173,64 @@ export default class CanObject {
 
     onKey(event) {
         if (event.code === 'Space') {
-            if (this.needsReset && this.waitingForScore == false) {
-                this.reset();
-            } else if (this.started === false) {
-                this.started = true;
-            } else if (this.hit === false) {
-                // If we weren't hit, check if we are now
+            this.onUse();
+        }
+    }
 
-                if (this.y > this.minHitHeight && this.y < this.maxHitHeight) {
-                    // Determine the rotation angle in radians
-                    const baseOffset = this.maxHitHeight - this.minHitHeight;
-                    const distanceFromCenter = (this.y - this.minHitHeight) / baseOffset;
-                    let rotAngle = lerp(0, Math.PI, distanceFromCenter);
+    onPointer() {
+        this.onUse();
+    }
 
-                    // Calculate the direction vector (multiplied by 100) (base is x: 0, y: -1)
-                    let cs = Math.cos(rotAngle);
-                    let sn = Math.sin(rotAngle);
-                    this.vel.x = 100 * sn;
-                    this.vel.y = -100 * cs;
+    onUse() {
+        if (this.needsReset && this.waitingForScore == false) {
+            this.reset();
+        } else if (this.started === false) {
+            this.started = true;
+        } else if (this.hit === false) {
+            // If we weren't hit, check if we are now
 
-                    console.log(`Swing, hit: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight}) => ${this.vel.x}, ${this.vel.y}`);
-                    this.setupRotDir();
-                    playSound('soupLaunch');
-                    playSound('batHit');
+            if (this.y > this.minHitHeight && this.y < this.maxHitHeight) {
+                // Determine the rotation angle in radians
+                const baseOffset = this.maxHitHeight - this.minHitHeight;
+                const distanceFromCenter = (this.y - this.minHitHeight) / baseOffset;
+                let rotAngle = lerp(0, Math.PI, distanceFromCenter);
 
-                    this.hit = true;
-                } else {
-                    console.log(`Swing, miss: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight})`);
-                }
-            } else if (this.extraHits > 0) {
+                // Calculate the direction vector (multiplied by 100) (base is x: 0, y: -1)
+                let cs = Math.cos(rotAngle);
+                let sn = Math.sin(rotAngle);
+                this.vel.x = 100 * sn;
+                this.vel.y = -100 * cs;
+
+                console.log(`Swing, hit: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight}) => ${this.vel.x}, ${this.vel.y}`);
+                this.setupRotDir();
+                playSound('soupLaunch');
                 playSound('batHit');
-                // We're hitting it after launch
-                if (this.vel.y < 0) {
-                    // Invert without friction
-                    this.vel.y *= -1;
-                } else {
-                    // Small boost if we were going up
-                    this.vel.y *= 1.3;
-                }
 
-                this.vel.x *= 1.1; // Small boost forward
-
-                this.hitMarker.visible = true;
-                this.timeout = window.setTimeout(() => (this.hitMarker.visible = false), 100);
-                this.extraHits--;
-                if (this.onHitCallback) {
-                    this.onHitCallback(this.remainingHits);
-                }
+                this.hit = true;
             } else {
-                playSound('powerUp');
+                console.log(`Swing, miss: ${this.y} (${this.minHitHeight}, ${this.maxHitHeight})`);
             }
+        } else if (this.extraHits > 0) {
+            playSound('batHit');
+            // We're hitting it after launch
+            if (this.vel.y < 0) {
+                // Invert without friction
+                this.vel.y *= -1;
+            } else {
+                // Small boost if we were going up
+                this.vel.y *= 1.3;
+            }
+
+            this.vel.x *= 1.1; // Small boost forward
+
+            this.hitMarker.visible = true;
+            this.timeout = window.setTimeout(() => (this.hitMarker.visible = false), 100);
+            this.extraHits--;
+            if (this.onHitCallback) {
+                this.onHitCallback(this.remainingHits);
+            }
+        } else {
+            playSound('powerUp');
         }
     }
 

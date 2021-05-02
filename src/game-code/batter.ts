@@ -37,11 +37,14 @@ export default class Batter {
         scene.addChild(this.object);
 
         this.object.loop = false;
-        document.addEventListener('keyup', (e) => {
+
+        const play = (e) => {
             if (this.canObject.isFalling) {
                 this.play();
             }
-        });
+        };
+        document.addEventListener('keyup', play);
+        document.addEventListener('click', play);
     }
 
     update(delta) {
